@@ -20,25 +20,71 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef PROCESSORPLUGINEDITOR_H_DEFINED
-#define PROCESSORPLUGINEDITOR_H_DEFINED
+#include "DataConverter.h"
 
-#include <EditorHeaders.h>
+#include "DataConverterEditor.h"
 
-class ProcessorPluginEditor : public GenericEditor
+
+DataConverter::DataConverter()
+    : GenericProcessor("Data Converter")
 {
-public:
 
-	/** Constructor */
-	ProcessorPluginEditor(GenericProcessor* parentNode);
+}
 
-	/** Destructor */
-	~ProcessorPluginEditor() { }
 
-private:
+DataConverter::~DataConverter()
+{
 
-	/** Generates an assertion if this class leaks */
-	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ProcessorPluginEditor);
-};
+}
 
-#endif // PROCESSORPLUGINEDITOR_H_DEFINED
+
+AudioProcessorEditor* DataConverter::createEditor()
+{
+    editor = std::make_unique<DataConverterEditor>(this);
+    return editor.get();
+}
+
+
+void DataConverter::updateSettings()
+{
+
+
+}
+
+
+void DataConverter::process(AudioBuffer<float>& buffer)
+{
+
+    checkForEvents(true);
+
+}
+
+
+void DataConverter::handleTTLEvent(TTLEventPtr event)
+{
+
+}
+
+
+void DataConverter::handleSpike(SpikePtr spike)
+{
+
+}
+
+
+void DataConverter::handleBroadcastMessage(String message)
+{
+
+}
+
+
+void DataConverter::saveCustomParametersToXml(XmlElement* parentElement)
+{
+
+}
+
+
+void DataConverter::loadCustomParametersFromXml(XmlElement* parentElement)
+{
+
+}

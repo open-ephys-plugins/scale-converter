@@ -20,9 +20,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "ProcessorPluginEditor.h"
+#include "DataConverterEditor.h"
 
-ProcessorPluginEditor::ProcessorPluginEditor(GenericProcessor* parentNode) 
+DataConverterEditor::DataConverterEditor(GenericProcessor* parentNode) 
     : GenericEditor(parentNode)
 {
 
