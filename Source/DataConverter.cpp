@@ -28,7 +28,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 DataConverter::DataConverter()
     : GenericProcessor("Data Converter")
 {
-
+    addFloatParameter(Parameter::STREAM_SCOPE, "scaling", "Multiplies the input by this value", 1, -1e10, 1e10, false);
+    addFloatParameter(Parameter::STREAM_SCOPE, "offset", "Adds this value after the above scaling", 0, -1e10, 1e10, false);
+    addMaskChannelsParameter(Parameter::STREAM_SCOPE, "Channels", "Channels to filter for this stream");
 }
 
 

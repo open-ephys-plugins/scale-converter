@@ -28,4 +28,8 @@ DataConverterEditor::DataConverterEditor(GenericProcessor* parentNode)
 
     desiredWidth = 150;
 
+    addTextBoxParameterEditor("scaling", 10, 22);
+    addTextBoxParameterEditor("offset", 10, 62);
+    addMaskChannelsParameterEditor("Channels", 10, 108);
+
 }
