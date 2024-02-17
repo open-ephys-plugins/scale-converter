@@ -25,6 +25,55 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <ProcessorHeaders.h>
 
+class LinearEquation
+{
+public:
+
+	/** Constructor -- sets default values*/
+	LinearEquation() { }
+
+	/** Holds the scaling factor for this channel*/
+	float scaling;
+
+	/** Holds the offset for this channel*/
+	float offset;
+
+	/** Applies the equation to the input buffer*/
+	void apply(float* data, int numSamples) {
+		for (int n = 0; n < numSamples; ++n) {
+			data[n] = data[n] * scaling + offset;
+		}
+	}
+
+};
+
+/** Holds settings for one stream's filters*/
+
+class DataConverterSettings
+{
+
+public:
+
+    /** Constructor -- sets default values*/
+    DataConverterSettings() { }
+
+    /** Holds the sample rate for this stream*/
+    float sampleRate;
+
+    /** Holds the filters for one stream*/
+    OwnedArray<LinearEquation> filters;
+
+    /** Creates new filters when input settings change*/
+    void createFilters(int numChannels, float sampleRate, double scaling, double offset);
+
+    /** Updates filters when parameters change*/
+    void updateFilters(double scaling, double offset);
+
+    /** Sets filter parameters for one channel*/
+    void setFilterParameters(double scaling, double offset, int channel);
+
+};
+
 
 class DataConverter : public GenericProcessor
 {
@@ -43,6 +92,9 @@ public:
 		passed through signal chain. The DataConverter can use this function to modify channel objects that
 		will be passed to downstream plugins. */
 	void updateSettings() override;
+
+    /** Called whenever a parameter's value is changed (called by GenericProcessor::setParameter())*/
+    void parameterValueChanged(Parameter* param) override;
 
 	/** Defines the functionality of the DataConverter.
 		The process method is called every time a new data buffer is available.
@@ -70,6 +122,10 @@ public:
 	/** Load custom settings from XML. This method is not needed to load the state of
 		Parameter objects*/
 	void loadCustomParametersFromXml(XmlElement* parentElement) override;
+
+private:
+
+	StreamSettings<DataConverterSettings> settings;
 
 };
 

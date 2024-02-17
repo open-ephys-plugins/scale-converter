@@ -24,6 +24,32 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "DataConverterEditor.h"
 
+/** Holds settings for one stream's filters*/
+void DataConverterSettings::createFilters(int numChannels, float sampleRate_, double scaling, double offset)
+{
+    sampleRate = sampleRate_;
+
+    filters.clear();
+
+    for (int n = 0; n < numChannels; ++n)
+        filters.add(new LinearEquation());
+
+    updateFilters(scaling, offset);
+}
+
+void DataConverterSettings::updateFilters(double scaling, double offset)
+{
+    for (int n = 0; n < filters.size(); n++)
+    {
+        setFilterParameters(scaling, offset, n);
+    }
+}
+
+void DataConverterSettings::setFilterParameters(double scaling, double offset, int channel)
+{
+    filters[channel]->scaling = scaling;
+    filters[channel]->offset = offset;
+}
 
 DataConverter::DataConverter()
     : GenericProcessor("Data Converter")
@@ -49,15 +75,54 @@ AudioProcessorEditor* DataConverter::createEditor()
 
 void DataConverter::updateSettings()
 {
+    settings.update(getDataStreams());
 
-
+    for (auto stream : getDataStreams())
+    {
+        settings[stream->getStreamId()]->createFilters(
+            stream->getChannelCount(),
+            stream->getSampleRate(),
+            (*stream)["scaling"],
+            (*stream)["offset"]
+        );
+    }
 }
 
+void DataConverter::parameterValueChanged(Parameter* param)
+{
+    
+    uint16 currentStream = param->getStreamId();
+
+    settings[currentStream]->updateFilters(
+        (*getDataStream(currentStream))["scaling"],
+        (*getDataStream(currentStream))["offset"]
+    );
+}
 
 void DataConverter::process(AudioBuffer<float>& buffer)
 {
 
-    checkForEvents(true);
+    for (auto stream : getDataStreams())
+    {
+
+        if ((*stream)["enable_stream"])
+        {
+            DataConverterSettings* streamSettings = settings[stream->getStreamId()];
+
+            const uint16 streamId = stream->getStreamId();
+            const uint32 numSamples = getNumSamplesInBlock(streamId);
+
+            for (auto localChannelIndex : *((*stream)["Channels"].getArray()))
+            {
+                int globalChannelIndex = getGlobalChannelIndex(stream->getStreamId(), (int) localChannelIndex);
+
+                float* ptr = buffer.getWritePointer(globalChannelIndex);
+
+                streamSettings->filters[localChannelIndex]->apply(ptr, numSamples);
+
+            }
+        }
+    }
 
 }
 
