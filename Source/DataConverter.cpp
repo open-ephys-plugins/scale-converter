@@ -54,9 +54,10 @@ void DataConverterSettings::setFilterParameters(double scaling, double offset, i
 DataConverter::DataConverter()
     : GenericProcessor("Data Converter")
 {
-    addFloatParameter(Parameter::STREAM_SCOPE, "scaling", "Multiplies the input by this value", 1, -1e10, 1e10, false);
-    addFloatParameter(Parameter::STREAM_SCOPE, "offset", "Adds this value after the above scaling", 0, -1e10, 1e10, false);
-    addMaskChannelsParameter(Parameter::STREAM_SCOPE, "Channels", "Channels to filter for this stream");
+    addFloatParameter(Parameter::STREAM_SCOPE, "scaling", "Scaling", "Multiplies the input by this value", "", 1, -1e32, 1e32, 0.0000001, false);
+    addFloatParameter(Parameter::STREAM_SCOPE, "offset", "Offset", "Adds this value after the above scaling", "", 0, -1e32, 1e32, 0.0000001, false);
+    addMaskChannelsParameter(Parameter::STREAM_SCOPE, "channels", "Channels", "Channels to filter for this stream");
+    addCategoricalParameter(Parameter::STREAM_SCOPE, "threads", "Threads", "Number of threads to use", { "1", "8", "16", "32"}, 3);
 }
 
 
@@ -112,7 +113,7 @@ void DataConverter::process(AudioBuffer<float>& buffer)
             const uint16 streamId = stream->getStreamId();
             const uint32 numSamples = getNumSamplesInBlock(streamId);
 
-            for (auto localChannelIndex : *((*stream)["Channels"].getArray()))
+            for (auto localChannelIndex : *((*stream)["channels"].getArray()))
             {
                 int globalChannelIndex = getGlobalChannelIndex(stream->getStreamId(), (int) localChannelIndex);
 

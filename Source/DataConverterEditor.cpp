@@ -26,10 +26,11 @@ DataConverterEditor::DataConverterEditor(GenericProcessor* parentNode)
     : GenericEditor(parentNode)
 {
 
-    desiredWidth = 150;
+    desiredWidth = 170;
 
-    addTextBoxParameterEditor("scaling", 10, 22);
-    addTextBoxParameterEditor("offset", 10, 62);
-    addMaskChannelsParameterEditor("Channels", 10, 108);
+    addSliderParameterEditor(Parameter::STREAM_SCOPE, "scaling", 15, 29);
+    addSliderParameterEditor(Parameter::STREAM_SCOPE, "offset", 15, 54);
+    addMaskChannelsParameterEditor(Parameter::STREAM_SCOPE, "channels", 15, 79);
+    addComboBoxParameterEditor(Parameter::STREAM_SCOPE, "threads", 15, 104);
 
 }
