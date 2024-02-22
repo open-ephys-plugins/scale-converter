@@ -20,12 +20,12 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "DataConverter.h"
+#include "ScaleConverter.h"
 
-#include "DataConverterEditor.h"
+#include "ScaleConverterEditor.h"
 
 /** Holds settings for one stream's filters*/
-void DataConverterSettings::createFilters(int numChannels, float sampleRate_, double scaling, double offset)
+void ScaleConverterSettings::createFilters(int numChannels, float sampleRate_, double scaling, double offset)
 {
     sampleRate = sampleRate_;
 
@@ -37,7 +37,7 @@ void DataConverterSettings::createFilters(int numChannels, float sampleRate_, do
     updateFilters(scaling, offset);
 }
 
-void DataConverterSettings::updateFilters(double scaling, double offset)
+void ScaleConverterSettings::updateFilters(double scaling, double offset)
 {
     for (int n = 0; n < filters.size(); n++)
     {
@@ -45,14 +45,14 @@ void DataConverterSettings::updateFilters(double scaling, double offset)
     }
 }
 
-void DataConverterSettings::setFilterParameters(double scaling, double offset, int channel)
+void ScaleConverterSettings::setFilterParameters(double scaling, double offset, int channel)
 {
     filters[channel]->scaling = scaling;
     filters[channel]->offset = offset;
 }
 
-DataConverter::DataConverter()
-    : GenericProcessor("Data Converter")
+ScaleConverter::ScaleConverter()
+    : GenericProcessor("Scale Converter")
 {
     addFloatParameter(Parameter::STREAM_SCOPE, "scaling", "Multiplies the input by this value", 1, -1e10, 1e10, false);
     addFloatParameter(Parameter::STREAM_SCOPE, "offset", "Adds this value after the above scaling", 0, -1e10, 1e10, false);
@@ -60,20 +60,20 @@ DataConverter::DataConverter()
 }
 
 
-DataConverter::~DataConverter()
+ScaleConverter::~ScaleConverter()
 {
 
 }
 
 
-AudioProcessorEditor* DataConverter::createEditor()
+AudioProcessorEditor* ScaleConverter::createEditor()
 {
-    editor = std::make_unique<DataConverterEditor>(this);
+    editor = std::make_unique<ScaleConverterEditor>(this);
     return editor.get();
 }
 
 
-void DataConverter::updateSettings()
+void ScaleConverter::updateSettings()
 {
     settings.update(getDataStreams());
 
@@ -88,7 +88,7 @@ void DataConverter::updateSettings()
     }
 }
 
-void DataConverter::parameterValueChanged(Parameter* param)
+void ScaleConverter::parameterValueChanged(Parameter* param)
 {
     
     uint16 currentStream = param->getStreamId();
@@ -99,7 +99,7 @@ void DataConverter::parameterValueChanged(Parameter* param)
     );
 }
 
-void DataConverter::process(AudioBuffer<float>& buffer)
+void ScaleConverter::process(AudioBuffer<float>& buffer)
 {
 
     for (auto stream : getDataStreams())
@@ -107,7 +107,7 @@ void DataConverter::process(AudioBuffer<float>& buffer)
 
         if ((*stream)["enable_stream"])
         {
-            DataConverterSettings* streamSettings = settings[stream->getStreamId()];
+            ScaleConverterSettings* streamSettings = settings[stream->getStreamId()];
 
             const uint16 streamId = stream->getStreamId();
             const uint32 numSamples = getNumSamplesInBlock(streamId);
@@ -127,31 +127,31 @@ void DataConverter::process(AudioBuffer<float>& buffer)
 }
 
 
-void DataConverter::handleTTLEvent(TTLEventPtr event)
+void ScaleConverter::handleTTLEvent(TTLEventPtr event)
 {
 
 }
 
 
-void DataConverter::handleSpike(SpikePtr spike)
+void ScaleConverter::handleSpike(SpikePtr spike)
 {
 
 }
 
 
-void DataConverter::handleBroadcastMessage(String message)
+void ScaleConverter::handleBroadcastMessage(String message)
 {
 
 }
 
 
-void DataConverter::saveCustomParametersToXml(XmlElement* parentElement)
+void ScaleConverter::saveCustomParametersToXml(XmlElement* parentElement)
 {
 
 }
 
 
-void DataConverter::loadCustomParametersFromXml(XmlElement* parentElement)
+void ScaleConverter::loadCustomParametersFromXml(XmlElement* parentElement)
 {
 
 }

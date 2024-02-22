@@ -20,16 +20,25 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "DataConverterEditor.h"
+#ifndef ScaleConverterEDITOR_H_DEFINED
+#define ScaleConverterEDITOR_H_DEFINED
 
-DataConverterEditor::DataConverterEditor(GenericProcessor* parentNode) 
-    : GenericEditor(parentNode)
+#include <EditorHeaders.h>
+
+class ScaleConverterEditor : public GenericEditor
 {
+public:
 
-    desiredWidth = 150;
+	/** Constructor */
+	ScaleConverterEditor(GenericProcessor* parentNode);
 
-    addTextBoxParameterEditor("scaling", 10, 22);
-    addTextBoxParameterEditor("offset", 10, 62);
-    addMaskChannelsParameterEditor("Channels", 10, 108);
+	/** Destructor */
+	~ScaleConverterEditor() { }
 
-}
+private:
+
+	/** Generates an assertion if this class leaks */
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ScaleConverterEditor);
+};
+
+#endif // ScaleConverterEDITOR_H_DEFINED

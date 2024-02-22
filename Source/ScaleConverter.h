@@ -20,8 +20,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef DATACONVERTER_H_DEFINED
-#define DATACONVERTER_H_DEFINED
+#ifndef ScaleConverter_H_DEFINED
+#define ScaleConverter_H_DEFINED
 
 #include <ProcessorHeaders.h>
 
@@ -49,13 +49,13 @@ public:
 
 /** Holds settings for one stream's filters*/
 
-class DataConverterSettings
+class ScaleConverterSettings
 {
 
 public:
 
     /** Constructor -- sets default values*/
-    DataConverterSettings() { }
+    ScaleConverterSettings() { }
 
     /** Holds the sample rate for this stream*/
     float sampleRate;
@@ -75,38 +75,38 @@ public:
 };
 
 
-class DataConverter : public GenericProcessor
+class ScaleConverter : public GenericProcessor
 {
 public:
 	/** The class constructor, used to initialize any members. */
-	DataConverter();
+	ScaleConverter();
 
 	/** The class destructor, used to deallocate memory */
-	~DataConverter();
+	~ScaleConverter();
 
-	/** If the DataConverter has a custom editor, this method must be defined to instantiate it. */
+	/** If the ScaleConverter has a custom editor, this method must be defined to instantiate it. */
 	AudioProcessorEditor* createEditor() override;
 
 	/** Called every time the settings of an upstream plugin are changed.
-		Allows the DataConverter to handle variations in the channel configuration or any other parameter
-		passed through signal chain. The DataConverter can use this function to modify channel objects that
+		Allows the ScaleConverter to handle variations in the channel configuration or any other parameter
+		passed through signal chain. The ScaleConverter can use this function to modify channel objects that
 		will be passed to downstream plugins. */
 	void updateSettings() override;
 
     /** Called whenever a parameter's value is changed (called by GenericProcessor::setParameter())*/
     void parameterValueChanged(Parameter* param) override;
 
-	/** Defines the functionality of the DataConverter.
+	/** Defines the functionality of the ScaleConverter.
 		The process method is called every time a new data buffer is available.
 		Visualizer plugins typically use this method to send data to the canvas for display purposes */
 	void process(AudioBuffer<float>& buffer) override;
 
-	/** Handles events received by the DataConverter
+	/** Handles events received by the ScaleConverter
 		Called automatically for each received event whenever checkForEvents() is called from
 		the plugin's process() method */
 	void handleTTLEvent(TTLEventPtr event) override;
 
-	/** Handles spikes received by the DataConverter
+	/** Handles spikes received by the ScaleConverter
 		Called automatically for each received spike whenever checkForEvents(true) is called from
 		the plugin's process() method */
 	void handleSpike(SpikePtr spike) override;
@@ -125,7 +125,7 @@ public:
 
 private:
 
-	StreamSettings<DataConverterSettings> settings;
+	StreamSettings<ScaleConverterSettings> settings;
 
 };
 
