@@ -22,13 +22,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "ScaleConverterEditor.h"
 
-ScaleConverterEditor::ScaleConverterEditor(GenericProcessor* parentNode) 
-    : GenericEditor(parentNode)
+ScaleConverterEditor::ScaleConverterEditor (GenericProcessor* parentNode)
+    : GenericEditor (parentNode)
 {
     desiredWidth = 170;
 
-    addTextBoxParameterEditor(Parameter::STREAM_SCOPE, "scaling", 15, 29);
-    addTextBoxParameterEditor(Parameter::STREAM_SCOPE, "offset", 15, 54);
-    addMaskChannelsParameterEditor(Parameter::STREAM_SCOPE, "channels", 15, 79);
-    addComboBoxParameterEditor(Parameter::STREAM_SCOPE, "threads", 15, 104);
+    addTextBoxParameterEditor (Parameter::STREAM_SCOPE, "scaling", 15, 29);
+    addTextBoxParameterEditor (Parameter::STREAM_SCOPE, "offset", 15, 54);
+    addMaskChannelsParameterEditor (Parameter::STREAM_SCOPE, "channels", 15, 79);
+    addComboBoxParameterEditor (Parameter::STREAM_SCOPE, "threads", 15, 104);
 }

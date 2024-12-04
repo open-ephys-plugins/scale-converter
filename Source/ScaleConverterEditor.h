@@ -28,17 +28,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 class ScaleConverterEditor : public GenericEditor
 {
 public:
+    /** Constructor */
+    ScaleConverterEditor (GenericProcessor* parentNode);
 
-	/** Constructor */
-	ScaleConverterEditor(GenericProcessor* parentNode);
-
-	/** Destructor */
-	~ScaleConverterEditor() { }
+    /** Destructor */
+    ~ScaleConverterEditor() {}
 
 private:
-
-	/** Generates an assertion if this class leaks */
-	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ScaleConverterEditor);
+    /** Generates an assertion if this class leaks */
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScaleConverterEditor);
 };
 
 #endif // ScaleConverterEDITOR_H_DEFINED

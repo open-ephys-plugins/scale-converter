@@ -28,34 +28,32 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 class LinearEquation
 {
 public:
+    /** Constructor -- sets default values*/
+    LinearEquation() {}
 
-	/** Constructor -- sets default values*/
-	LinearEquation() { }
+    /** Holds the scaling factor for this channel*/
+    float scaling;
 
-	/** Holds the scaling factor for this channel*/
-	float scaling;
+    /** Holds the offset for this channel*/
+    float offset;
 
-	/** Holds the offset for this channel*/
-	float offset;
-
-	/** Applies the equation to the input buffer*/
-	void apply(float* data, int numSamples) {
-		for (int n = 0; n < numSamples; ++n) {
-			data[n] = data[n] * scaling + offset;
-		}
-	}
-
+    /** Applies the equation to the input buffer*/
+    void apply (float* data, int numSamples)
+    {
+        for (int n = 0; n < numSamples; ++n)
+        {
+            data[n] = data[n] * scaling + offset;
+        }
+    }
 };
 
 /** Holds settings for one stream's filters*/
 
 class ScaleConverterSettings
 {
-
 public:
-
     /** Constructor -- sets default values*/
-    ScaleConverterSettings() { }
+    ScaleConverterSettings() {}
 
     /** Holds the sample rate for this stream*/
     float sampleRate;
@@ -64,72 +62,68 @@ public:
     OwnedArray<LinearEquation> filters;
 
     /** Creates new filters when input settings change*/
-    void createFilters(int numChannels, float sampleRate, double scaling, double offset);
+    void createFilters (int numChannels, float sampleRate, double scaling, double offset);
 
     /** Updates filters when parameters change*/
-    void updateFilters(double scaling, double offset);
+    void updateFilters (double scaling, double offset);
 
     /** Sets filter parameters for one channel*/
-    void setFilterParameters(double scaling, double offset, int channel);
-
+    void setFilterParameters (double scaling, double offset, int channel);
 };
-
 
 class ScaleConverter : public GenericProcessor
 {
 public:
-	/** The class constructor, used to initialize any members. */
-	ScaleConverter();
+    /** The class constructor, used to initialize any members. */
+    ScaleConverter();
 
-	/** The class destructor, used to deallocate memory */
-	~ScaleConverter();
+    /** The class destructor, used to deallocate memory */
+    ~ScaleConverter();
 
-	/** Registers the parameters for the ScaleConverter */
-	void registerParameters() override;
+    /** Registers the parameters for the ScaleConverter */
+    void registerParameters() override;
 
-	/** If the ScaleConverter has a custom editor, this method must be defined to instantiate it. */
-	AudioProcessorEditor* createEditor() override;
+    /** If the ScaleConverter has a custom editor, this method must be defined to instantiate it. */
+    AudioProcessorEditor* createEditor() override;
 
-	/** Called every time the settings of an upstream plugin are changed.
+    /** Called every time the settings of an upstream plugin are changed.
 		Allows the ScaleConverter to handle variations in the channel configuration or any other parameter
 		passed through signal chain. The ScaleConverter can use this function to modify channel objects that
 		will be passed to downstream plugins. */
-	void updateSettings() override;
+    void updateSettings() override;
 
     /** Called whenever a parameter's value is changed (called by GenericProcessor::setParameter())*/
-    void parameterValueChanged(Parameter* param) override;
+    void parameterValueChanged (Parameter* param) override;
 
-	/** Defines the functionality of the ScaleConverter.
+    /** Defines the functionality of the ScaleConverter.
 		The process method is called every time a new data buffer is available.
 		Visualizer plugins typically use this method to send data to the canvas for display purposes */
-	void process(AudioBuffer<float>& buffer) override;
+    void process (AudioBuffer<float>& buffer) override;
 
-	/** Handles events received by the ScaleConverter
+    /** Handles events received by the ScaleConverter
 		Called automatically for each received event whenever checkForEvents() is called from
 		the plugin's process() method */
-	void handleTTLEvent(TTLEventPtr event) override;
+    void handleTTLEvent (TTLEventPtr event) override;
 
-	/** Handles spikes received by the ScaleConverter
+    /** Handles spikes received by the ScaleConverter
 		Called automatically for each received spike whenever checkForEvents(true) is called from
 		the plugin's process() method */
-	void handleSpike(SpikePtr spike) override;
+    void handleSpike (SpikePtr spike) override;
 
-	/** Handles broadcast messages sent during acquisition
+    /** Handles broadcast messages sent during acquisition
 		Called automatically whenever a broadcast message is sent through the signal chain */
-	void handleBroadcastMessage(const String& message, const int64 systemTimeMillis) override;
+    void handleBroadcastMessage (const String& message, const int64 systemTimeMillis) override;
 
-	/** Saving custom settings to XML. This method is not needed to save the state of
+    /** Saving custom settings to XML. This method is not needed to save the state of
 		Parameter objects */
-	void saveCustomParametersToXml(XmlElement* parentElement) override;
+    void saveCustomParametersToXml (XmlElement* parentElement) override;
 
-	/** Load custom settings from XML. This method is not needed to load the state of
+    /** Load custom settings from XML. This method is not needed to load the state of
 		Parameter objects*/
-	void loadCustomParametersFromXml(XmlElement* parentElement) override;
+    void loadCustomParametersFromXml (XmlElement* parentElement) override;
 
 private:
-
-	StreamSettings<ScaleConverterSettings> settings;
-
+    StreamSettings<ScaleConverterSettings> settings;
 };
 
 #endif
