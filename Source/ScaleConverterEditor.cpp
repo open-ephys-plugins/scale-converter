@@ -29,6 +29,5 @@ ScaleConverterEditor::ScaleConverterEditor (GenericProcessor* parentNode)
 
     addTextBoxParameterEditor (Parameter::STREAM_SCOPE, "scaling", 15, 29);
     addTextBoxParameterEditor (Parameter::STREAM_SCOPE, "offset", 15, 54);
-    addMaskChannelsParameterEditor (Parameter::STREAM_SCOPE, "channels", 15, 79);
-    addComboBoxParameterEditor (Parameter::STREAM_SCOPE, "threads", 15, 104);
+    addMaskChannelsParameterEditor (Parameter::STREAM_SCOPE, "channels", 15, 104);
 }
