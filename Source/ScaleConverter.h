@@ -87,40 +87,18 @@ public:
     AudioProcessorEditor* createEditor() override;
 
     /** Called every time the settings of an upstream plugin are changed.
-		Allows the ScaleConverter to handle variations in the channel configuration or any other parameter
-		passed through signal chain. The ScaleConverter can use this function to modify channel objects that
-		will be passed to downstream plugins. */
+    Allows the ScaleConverter to handle variations in the channel configuration or any other parameter
+    passed through signal chain. The ScaleConverter can use this function to modify channel objects that
+    will be passed to downstream plugins. */
     void updateSettings() override;
 
     /** Called whenever a parameter's value is changed (called by GenericProcessor::setParameter())*/
     void parameterValueChanged (Parameter* param) override;
 
     /** Defines the functionality of the ScaleConverter.
-		The process method is called every time a new data buffer is available.
-		Visualizer plugins typically use this method to send data to the canvas for display purposes */
+    The process method is called every time a new data buffer is available.
+    Visualizer plugins typically use this method to send data to the canvas for display purposes */
     void process (AudioBuffer<float>& buffer) override;
-
-    /** Handles events received by the ScaleConverter
-		Called automatically for each received event whenever checkForEvents() is called from
-		the plugin's process() method */
-    void handleTTLEvent (TTLEventPtr event) override;
-
-    /** Handles spikes received by the ScaleConverter
-		Called automatically for each received spike whenever checkForEvents(true) is called from
-		the plugin's process() method */
-    void handleSpike (SpikePtr spike) override;
-
-    /** Handles broadcast messages sent during acquisition
-		Called automatically whenever a broadcast message is sent through the signal chain */
-    void handleBroadcastMessage (const String& message, const int64 systemTimeMillis) override;
-
-    /** Saving custom settings to XML. This method is not needed to save the state of
-		Parameter objects */
-    void saveCustomParametersToXml (XmlElement* parentElement) override;
-
-    /** Load custom settings from XML. This method is not needed to load the state of
-		Parameter objects*/
-    void loadCustomParametersFromXml (XmlElement* parentElement) override;
 
 private:
     StreamSettings<ScaleConverterSettings> settings;

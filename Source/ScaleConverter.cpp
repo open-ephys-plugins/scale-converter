@@ -65,7 +65,7 @@ void ScaleConverter::registerParameters()
     addFloatParameter (Parameter::STREAM_SCOPE, "scaling", "Scaling", "Multiplies the input by this value", "", 1, -1e32, 1e32, 0.0000001, false);
     addFloatParameter (Parameter::STREAM_SCOPE, "offset", "Offset", "Adds this value after the above scaling", "", 0, -1e32, 1e32, 0.0000001, false);
     addMaskChannelsParameter (Parameter::STREAM_SCOPE, "channels", "Channels", "Channels to filter for this stream");
-    addCategoricalParameter (Parameter::STREAM_SCOPE, "threads", "Threads", "Number of threads to use", { "1", "8", "16", "32" }, 3);
+    // addCategoricalParameter (Parameter::STREAM_SCOPE, "threads", "Threads", "Number of threads to use", { "1", "8", "16", "32" }, 3);
 }
 
 AudioProcessorEditor* ScaleConverter::createEditor()
@@ -118,24 +118,4 @@ void ScaleConverter::process (AudioBuffer<float>& buffer)
             }
         }
     }
-}
-
-void ScaleConverter::handleTTLEvent (TTLEventPtr event)
-{
-}
-
-void ScaleConverter::handleSpike (SpikePtr spike)
-{
-}
-
-void ScaleConverter::handleBroadcastMessage (const String& message, const int64 systemTimeMillis)
-{
-}
-
-void ScaleConverter::saveCustomParametersToXml (XmlElement* parentElement)
-{
-}
-
-void ScaleConverter::loadCustomParametersFromXml (XmlElement* parentElement)
-{
 }
